@@ -10,22 +10,19 @@ export function generateStaticParams() {
   return LANGS.map(lang => ({ lang }));
 }
 
-// URL publique : fournie automatiquement par Vercel en production
-const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
-  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : "http://localhost:3000";
+// URL publique du site (GitHub Pages), sans "/" final
+const siteUrl = process.env.SITE_URL ?? "https://guillaumeducuing.github.io/wasntme-privacy";
 
 export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Promise<Metadata> {
   const { lang } = await params;
   if (!isLang(lang)) return {};
   const t = CONTENT[lang];
   return {
-    metadataBase: new URL(siteUrl),
     title: t.metaTitle,
     description: t.metaDescription,
     alternates: {
-      canonical: `/${lang}`,
-      languages: Object.fromEntries(LANGS.map(l => [l, `/${l}`]))
+      canonical: `${siteUrl}/${lang}/`,
+      languages: Object.fromEntries(LANGS.map(l => [l, `${siteUrl}/${l}/`]))
     },
     openGraph: { title: t.metaTitle, description: t.metaDescription, type: "website" }
   };

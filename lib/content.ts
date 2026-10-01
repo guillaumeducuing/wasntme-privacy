@@ -9,9 +9,9 @@ export const isLang = (value: string): value is Lang =>
 
 export const LAST_UPDATED = new Date("2026-10-01");
 
-// Adresse de contact affichée sur la page : variable d'environnement CONTACT_EMAIL
-// (à définir dans Vercel → Settings → Environment Variables). Sans elle, la
-// section Contact n'est pas affichée.
+// Adresse de contact affichée sur la page : variable CONTACT_EMAIL, lue au build
+// (GitHub → Settings → Secrets and variables → Actions → Variables).
+// Sans elle, la section Contact n'est pas affichée.
 export const CONTACT_EMAIL = process.env.CONTACT_EMAIL ?? "";
 
 type Row = { data: string; why: string; where: string };
@@ -222,14 +222,7 @@ export const CONTENT: Record<Lang, Content> = {
   }
 };
 
-// "Accept-Language: fr-FR,fr;q=0.9,en;q=0.8" → "fr"
-export function pickLang(acceptLanguage: string | null): Lang {
-  const wanted = (acceptLanguage ?? "")
-    .split(",")
-    .map(part => {
-      const [tag, q] = part.trim().split(";q=");
-      return { lang: tag.slice(0, 2).toLowerCase(), q: q ? Number(q) : 1 };
-    })
-    .sort((a, b) => b.q - a.q);
-  return wanted.map(w => w.lang).find(isLang) ?? "en";
+// ["fr-FR", "fr", "en"] (navigator.languages) → "fr" ; anglais par défaut
+export function pickLang(languages: readonly string[]): Lang {
+  return languages.map(tag => tag.slice(0, 2).toLowerCase()).find(isLang) ?? "en";
 }

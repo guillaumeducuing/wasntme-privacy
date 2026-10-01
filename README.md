@@ -16,9 +16,11 @@ npm install
 npm run dev
 ```
 
-## Deploy on Vercel
+## Deploy
 
-Import this repository on [vercel.com/new](https://vercel.com/new); Next.js is detected automatically.
-Optional environment variable: `CONTACT_EMAIL`, the address shown in the Contact section (hidden when not set).
+Published on GitHub Pages by [`.github/workflows/pages.yml`](.github/workflows/pages.yml) on every push to `main`:
+**https://guillaumeducuing.github.io/wasntme-privacy/**
+
+Optional repository variable `CONTACT_EMAIL` (Settings → Secrets and variables → Actions → Variables): the address shown in the Contact section, hidden when not set.
 
 Fonts: Bricolage Grotesque and JetBrains Mono, under the SIL Open Font License (see `app/fonts/`).
